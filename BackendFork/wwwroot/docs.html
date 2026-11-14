@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BackendFork API</title>
+<style>
+body{font:16px system-ui,sans-serif;max-width:1000px;margin:32px auto;padding:0 20px;color:#172032;background:#f6f8fb}
+h1{margin-bottom:8px}section{background:white;border:1px solid #dce3ed;border-radius:10px;padding:20px;margin:18px 0}
+input,select,textarea,button{font:inherit;padding:9px;border:1px solid #bdc9d8;border-radius:5px;margin:4px 0}
+textarea{width:95%;min-height:150px;font-family:monospace}button{background:#1555ac;color:white;cursor:pointer}
+pre{background:#eef2f7;padding:12px;overflow:auto;white-space:pre-wrap}label{display:block}small{color:#526175}
+#path{width:94%}.endpoint{display:block;background:transparent;color:#1555ac;text-align:left;border:0;margin:5px 0}
+#status{white-space:pre-wrap}a{color:#1555ac}
+</style></head>
+<body>
+<h1>BackendFork API</h1>
+<p>Локальный бэк для осмотра оборудования. <a href="/openapi/v1.json">Скачать OpenAPI JSON</a></p>
+<section><h2>Вход по PIN</h2>
+<p id="authState">Проверяю настройку…</p>
+<label>Имя инженера (при первой настройке) <input id="name" value="Инженер" maxlength="100"></label>
+<label>PIN <input id="pin" type="password" inputmode="numeric" pattern="[0-9]{4,12}" maxlength="12" autocomplete="off"></label>
+<button id="setup">Настроить PIN</button> <button id="login">Войти</button> <button id="logout">Выйти</button>
+<p id="status"></p><small>Первая настройка доступна через localhost на компьютере с бэком. Сессия хранится только в памяти этой страницы.</small>
+</section>
+<section><h2>Вызов API</h2>
+<label>Метод <select id="method"><option>GET</option><option>POST</option><option>PUT</option></select></label>
+<label>Путь с параметрами <input id="path" value="/api/equipment"></label>
+<label>Тело JSON <textarea id="body">{}</textarea></label>
+<label>Фото для POST /api/photos <input id="photo" type="file" accept="image/jpeg,image/png,image/webp,application/pdf"></label>
+<button id="send">Отправить</button><pre id="response">Результат появится здесь.</pre>
+</section>
+<section><h2>Маршруты</h2><div id="routes"></div></section>
+<script>
+let token='',spec;
+const el=id=>document.getElementById(id);
+async function auth(action){
+ try{
+  const body=action==='setup'?{displayName:el('name').value,pin:el('pin').value}:{pin:el('pin').value};
+  const response=await fetch('/api/auth/'+action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const data=await response.json();
+  if(!response.ok)throw new Error(data.detail||JSON.stringify(data));
+  token=data.token;el('pin').value='';el('status').textContent='Выполнен вход: '+data.displayName+'. Сессия до '+data.expiresAt;
+  await authState();
+ }catch(error){el('status').textContent=error.message}
+}
+async function authState(){
+ const state=await(await fetch('/api/auth/status')).json();
+ el('authState').textContent=state.configured?'PIN настроен. Введите его для входа.':'Установите свой PIN из 4–12 цифр.';
+ el('setup').disabled=state.configured;
+}
+el('setup').onclick=()=>auth('setup');el('login').onclick=()=>auth('login');
+el('logout').onclick=async()=>{await fetch('/api/auth/logout',{method:'POST',headers:{Authorization:'Bearer '+token}});token='';el('status').textContent='Вы вышли.'};
+function sample(schema,depth=0){
+ if(depth>6)return null;
+ if(schema.allOf)return sample(schema.allOf[0],depth+1);
+ if(schema.$ref)return sample(spec.components.schemas[schema.$ref.split('/').pop()],depth+1);
+ if(schema.enum)return schema.enum[0];
+ if(schema.format==='date-time')return new Date().toISOString();
+ if(schema.format==='uuid')return '00000000-0000-0000-0000-000000000000';
+ if(schema.type==='object')return Object.fromEntries(Object.entries(schema.properties||{}).map(([k,v])=>[k,sample(v,depth+1)]));
+ if(schema.type==='array')return [sample(schema.items,depth+1)];
+ if(schema.type==='number'||schema.type==='integer')return 0;
+ if(schema.type==='boolean')return false;
+ return '';
+}
+el('send').onclick=async()=>{
+ try{
+  const path=el('path').value;
+  if(!path.startsWith('/api/')||path.startsWith('//'))throw new Error('Используйте путь /api/…');
+  const method=el('method').value,headers=token?{Authorization:'Bearer '+token}:{},request={method,headers};
+  if(method!=='GET'){
+   if(path==='/api/photos'||path==='/api/documents'){const form=new FormData();if(path==='/api/documents'){const fields=JSON.parse(el('body').value);for(const[key,value]of Object.entries(fields))if(key!=='file'&&value!==null)form.append(key,String(value));}if(!el('photo').files[0])throw new Error('Выберите фото');form.append('file',el('photo').files[0]);request.body=form}
+   else{headers['Content-Type']='application/json';request.body=JSON.stringify(JSON.parse(el('body').value))}
+  }
+  const response=await fetch(path,request);
+  if(response.headers.get('content-type')?.startsWith('application/pdf')){const link=document.createElement('a');const href=URL.createObjectURL(await response.blob());link.href=href;link.download='report.pdf';link.textContent='Скачать PDF';el('response').replaceChildren(link);}else if(response.headers.get('content-type')?.startsWith('image/')){
+   const url=URL.createObjectURL(await response.blob());const img=new Image();img.src=url;img.style.maxWidth='100%';
+   img.onload=()=>URL.revokeObjectURL(url);el('response').replaceChildren(img);
+  }else{const body=await response.text();let formatted=body;try{formatted=JSON.stringify(JSON.parse(body),null,2)}catch{}el('response').textContent='HTTP '+response.status+'\n'+formatted}
+ }catch(error){el('response').textContent=error.message}
+};
+(async()=>{
+ try{
+  await authState();spec=await(await fetch('/openapi/v1.json')).json();
+  for(const[path,methods]of Object.entries(spec.paths))for(const[method,op]of Object.entries(methods)){
+   const button=document.createElement('button');button.className='endpoint';button.textContent=method.toUpperCase()+' '+path;
+   button.onclick=()=>{el('method').value=method.toUpperCase();el('path').value=path;
+    const schema=op.requestBody?.content?.['application/json']?.schema;el('body').value=JSON.stringify(schema?sample(schema):{},null,2);el('path').scrollIntoView({behavior:'smooth'})};
+   el('routes').append(button);
+  }
+ }catch(error){el('routes').textContent=error.message}
+})();
+</script></body></html>

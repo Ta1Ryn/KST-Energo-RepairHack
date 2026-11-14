@@ -1,0 +1,10 @@
+.venv/
+weights/
+runs/
+datasets/
+annotations/
+references/
+models/
+model.local.json*
+requirements.local.lock.txt
+__pycache__/

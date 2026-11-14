@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#F2F5FA</color>
+    <color name="accent">#6FA3F0</color>
+    <color name="accent_inactive">#3E506B</color>
+    <color name="accent_soft">#24364D</color>
+    <color name="accent_deep">#4F8FEA</color>
+    <color name="on_accent">#111F34</color>
+    <color name="success">#70D897</color>
+    <color name="error">#FF9DA5</color>
+    <color name="warning">#F6C773</color>
+    <color name="input_bg">#202A37</color>
+    <color name="input_stroke">#354255</color>
+    <color name="placeholder">#A5B0C0</color>
+    <color name="description">#B3BDCB</color>
+    <color name="home_icon_tint">#FFFFFFFF</color>
+    <color name="card_stroke">#303C4D</color>
+    <color name="bg">#111720</color>
+    <color name="surface">#1B2430</color>
+    <color name="icon_muted">#9AA8BA</color>
+    <color name="history_tint">#A49AFF</color>
+    <color name="history_soft">#302D48</color>
+    <color name="settings_tint">#73B5D2</color>
+    <color name="settings_soft">#233743</color>
+    <color name="divider">#2C3848</color>
+    <color name="text_secondary">#A9B5C4</color>
+    <color name="error_soft">#3A2226</color>
+    <color name="stale_soft">#262E3A</color>
+    <color name="success_soft">#1E3326</color>
+    <color name="warning_soft">#3A3020</color>
+</resources>

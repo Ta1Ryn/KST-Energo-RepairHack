@@ -1,0 +1,236 @@
+[
+  {
+    "id": "corrosion",
+    "name": "Коррозия · YOLOv8",
+    "repo": "Decizez/yolov-corrosion-detection",
+    "revision": "d470ae2a2fedd7b1eed7c90e812363b09ef063b5",
+    "remote": "Lite_YOLO8_v1.pt",
+    "sha256": "77035a7c890c91c7576b3afbd5f6750d6b59387c30268eac48fbc11c7b07730d",
+    "domain": "Коррозия металлических поверхностей. Уровни коррозии не заменяют измерение толщины.",
+    "mapping": {
+      "Rust": "corrosion",
+      "copper corrosion": "corrosion",
+      "corroded-part": "corrosion",
+      "corrosion": "corrosion",
+      "iron rust": "corrosion",
+      "mild-corrosion": "corrosion",
+      "moderate-corrosion": "corrosion",
+      "rust": "corrosion",
+      "severe-corrosion": "corrosion"
+    },
+    "ignored": [
+      "car"
+    ],
+    "file": "models/corrosion.pt",
+    "url": "https://huggingface.co/Decizez/yolov-corrosion-detection/resolve/d470ae2a2fedd7b1eed7c90e812363b09ef063b5/Lite_YOLO8_v1.pt",
+    "experimental": true
+  },
+  {
+    "id": "oil",
+    "name": "Следы жидкости · YOLO26n",
+    "repo": "kareem1232/spill_leak_detection_nano",
+    "revision": "26eeaf9464458c81e106d019caa4ad1db43b41ba",
+    "remote": "weights/best.pt",
+    "sha256": "889f199d967d3958195922e68774e960138e69877757a349e4efe590d1596274",
+    "domain": "Авторский класс oil. Состав жидкости и наличие течи требуют проверки; описание обучающих данных не опубликовано.",
+    "mapping": {
+      "oil": "leak"
+    },
+    "ignored": [],
+    "file": "models/oil.pt",
+    "url": "https://huggingface.co/kareem1232/spill_leak_detection_nano/resolve/26eeaf9464458c81e106d019caa4ad1db43b41ba/weights/best.pt",
+    "experimental": true
+  },
+  {
+    "id": "metal",
+    "name": "Поверхность металла · YOLO11s",
+    "repo": "rltjr/metal-surface-defect-yolo11s-seg",
+    "revision": "5b1505fb0ea54c61a58dc898a5c1833a8d1a8935",
+    "remote": "metal-surface-defect-yolo11s-seg.pt",
+    "sha256": "32ac4da08f4ccc20ee8c7c52bf5afe845d7aa31642dd05014bc563f0f1a53675",
+    "domain": "Обучена на отдельных обработанных металлических деталях. Пятно или царапина не означают неисправность всего агрегата.",
+    "mapping": {
+      "Dark Spot": "dark_spot",
+      "Fold": "surface_fold",
+      "Oxidation": "corrosion",
+      "Porosity": "porosity",
+      "Scratch": "surface_scratch",
+      "Stain": "surface_stain"
+    },
+    "ignored": [],
+    "file": "models/metal.pt",
+    "url": "https://huggingface.co/rltjr/metal-surface-defect-yolo11s-seg/resolve/5b1505fb0ea54c61a58dc898a5c1833a8d1a8935/metal-surface-defect-yolo11s-seg.pt",
+    "experimental": true
+  },
+  {
+    "id": "crack",
+    "name": "Трещины · YOLOv8",
+    "repo": "OpenSistemas/YOLOv8-crack-seg",
+    "revision": "910c33b45c040fd8b1cb93eae3fb08ec2ca8b956",
+    "remote": "yolov8n/weights/best.pt",
+    "sha256": "cce8b30758621622a03119677709d172f2ec1a2f0452279bda37732fcffb00af",
+    "domain": "Обучена преимущественно на дорогах и стенах. Результат на металле экспериментальный.",
+    "mapping": {
+      "crack": "crack",
+      "Crack": "crack",
+      "cracks": "crack"
+    },
+    "ignored": [],
+    "file": "models/crack.pt",
+    "url": "https://huggingface.co/OpenSistemas/YOLOv8-crack-seg/resolve/910c33b45c040fd8b1cb93eae3fb08ec2ca8b956/yolov8n/weights/best.pt",
+    "experimental": true
+  },
+  {
+    "id": "case_pilot",
+    "name": "Наша разметка 94 фото · YOLO11n",
+    "file": "models/case-pilot.pt",
+    "sha256": "6c3aaec21f15ed23cd602810494552778833bf8297ee28b6553eff48ecc08e72",
+    "experimental": true,
+    "domain": "Дообучена с 40 новыми фото: 77 train, прежние 5 val и 12 test. mAP50 0.0803; качество экспериментальное, требуется проверка инженером.",
+    "mapping": {
+      "corrosion": "corrosion",
+      "leak": "leak",
+      "crack": "crack",
+      "insulation_damage": "insulation_damage",
+      "heat_damage": "heat_damage",
+      "contamination": "contamination",
+      "mechanical_damage": "mechanical_damage",
+      "missing_part": "missing_part",
+      "wear": "wear"
+    },
+    "ignored": [],
+    "sourceRun": "case-pilot-20261114-125614"
+  },
+  {
+    "id": "reviewed200",
+    "name": "Новая разметка · 130 фото · пилот",
+    "file": "models/reviewed200-pilot.pt",
+    "sha256": "f43e52be61f3f783b63bed58c750ed1703e2b1790b0b65682429c8a320313c11",
+    "experimental": true,
+    "sourceRun": "reviewed200-stable-20261114-161551",
+    "domain": "Трубы и металлические детали. Дообучение на 224 фото; уверенное улучшение на старой контрольной выборке не подтверждено. Выбирайте для отдельной проверки.",
+    "mapping": {
+      "corrosion": "corrosion",
+      "leak": "leak",
+      "crack": "crack",
+      "insulation_damage": "insulation_damage",
+      "heat_damage": "heat_damage",
+      "contamination": "contamination",
+      "mechanical_damage": "mechanical_damage",
+      "missing_part": "missing_part",
+      "wear": "wear"
+    },
+    "ignored": []
+  },
+  {
+    "id": "crack_trained",
+    "name": "Трещины · Crack-Seg · дообучение",
+    "file": "models/crack-trained-5fc475078871.pt",
+    "sha256": "5fc475078871a9b3cc6e80d35cb2929c66d74ca326aec0aca5cba97fbc96dddb",
+    "experimental": true,
+    "task": "segment",
+    "sourceRun": "crack-seg-20261114-164154",
+    "trainingData": "/home/nok1d/Downloads/Fork-KST-Energo-2026-11-14/fork/ComputerVision/datasets/crack-seg-ultralytics-v1",
+    "trainingReport": "/home/nok1d/Downloads/Fork-KST-Energo-2026-11-14/fork/ComputerVision/runs/crack-seg-20261114-164154/evaluation.json",
+    "splitImages": {
+      "train": 3717,
+      "val": 200,
+      "test": 111
+    },
+    "domain": "Crack-Seg: дороги и стены. Перенос на насосы и металл проверяется отдельно.",
+    "mapping": {
+      "crack": "crack"
+    },
+    "ignored": []
+  },
+  {
+    "id": "oil_trained",
+    "name": "Следы масла · Roboflow + наша разметка",
+    "file": "models/oil-trained-04b215f8a382.pt",
+    "sha256": "04b215f8a38253fb21d37725b52d2f9c8a770fe31fe38ed4e9041cb4faacb565",
+    "experimental": true,
+    "task": "detect",
+    "sourceRun": "roboflow-oil-20261114-170338",
+    "trainingData": "/home/nok1d/Downloads/Fork-KST-Energo-2026-11-14/fork/ComputerVision/datasets/roboflow-oil-user-20261114-v1",
+    "trainingReport": "/home/nok1d/Downloads/Fork-KST-Energo-2026-11-14/fork/ComputerVision/runs/roboflow-oil-20261114-170338/evaluation.json",
+    "splitImages": {
+      "train": 428,
+      "val": 68,
+      "test": 39
+    },
+    "domain": "Дообучена на Oil Leak Detection и подтверждённых фото пользователя. Состав жидкости и источник течи по фото не подтверждаются.",
+    "mapping": {
+      "leak": "leak"
+    },
+    "ignored": [],
+    "sourceUrl": "https://universe.roboflow.com/chiranjeevi-p2jmx/oil-leak-detection-axcq4/dataset/1"
+  },
+  {
+    "id": "damage_trained",
+    "name": "Повреждения · лопасти + наша разметка",
+    "file": "models/damage-trained-d621d0d20baf.pt",
+    "sha256": "d621d0d20baf8edaf3cb801a32e038d7a8c997ede090a9c6107da6b421b66199",
+    "experimental": true,
+    "task": "detect",
+    "sourceRun": "roboflow-damage-20261114-170823",
+    "trainingData": "/home/nok1d/Downloads/Fork-KST-Energo-2026-11-14/fork/ComputerVision/datasets/roboflow-damage-user-20261114-v1",
+    "trainingReport": "/home/nok1d/Downloads/Fork-KST-Energo-2026-11-14/fork/ComputerVision/runs/roboflow-damage-20261114-170823/evaluation.json",
+    "splitImages": {
+      "train": 630,
+      "val": 46,
+      "test": 27
+    },
+    "domain": "Трещины, повреждения и эрозия лопастей плюс подтверждённые фото пользователя. Отдельной проверки деформации или соосности валов нет.",
+    "mapping": {
+      "crack": "crack",
+      "mechanical_damage": "mechanical_damage",
+      "wear": "wear"
+    },
+    "ignored": [],
+    "sourceUrl": "https://universe.roboflow.com/drone-s4cii/wind-turbine-object-detection/dataset/2"
+  },
+  {
+    "id": "corrosion_trained",
+    "name": "Коррозия · Roboflow + наша разметка",
+    "file": "models/corrosion-trained-60752e42eaff.pt",
+    "sha256": "60752e42eaff8e72d0ba912b42c832c253396c9ff10aabd93f88a27d6a6babca",
+    "experimental": true,
+    "task": "detect",
+    "sourceRun": "roboflow-corrosion-20261114-171510",
+    "trainingData": "/home/nok1d/Downloads/Fork-KST-Energo-2026-11-14/fork/ComputerVision/datasets/roboflow-corrosion-user-20261114-v1",
+    "trainingReport": "/home/nok1d/Downloads/Fork-KST-Energo-2026-11-14/fork/ComputerVision/runs/roboflow-corrosion-20261114-171510/evaluation.json",
+    "splitImages": {
+      "train": 2162,
+      "val": 251,
+      "test": 243
+    },
+    "domain": "Дообучена на corrosion v5 и подтверждённой разметке пользователя. Исходные маски использованы как рамки; степень потери металла не измеряется.",
+    "mapping": {
+      "corrosion": "corrosion"
+    },
+    "ignored": [],
+    "sourceUrl": "https://universe.roboflow.com/yilmaz/corrosion-jmvmm/dataset/5"
+  },
+  {
+    "id": "corrosion_adapt_trained",
+    "name": "Коррозия · адаптация на наших фото",
+    "file": "models/corrosion_adapt-trained-182b15e4d996.pt",
+    "sha256": "182b15e4d9966d47792d199005bdc5cecfd337b9e753b5cadd7d85d36bb4d1bb",
+    "experimental": true,
+    "task": "detect",
+    "sourceRun": "corrosion-user-adapt-20261114-175313",
+    "trainingData": "/home/nok1d/Downloads/Fork-KST-Energo-2026-11-14/fork/ComputerVision/datasets/corrosion-user-adapt-20261114-v1",
+    "trainingReport": "/home/nok1d/Downloads/Fork-KST-Energo-2026-11-14/fork/ComputerVision/runs/corrosion-user-adapt-20261114-175313/evaluation.json",
+    "splitImages": {
+      "train": 207,
+      "val": 5,
+      "test": 12
+    },
+    "domain": "Второй этап после corrosion v5: дообучение только на подтверждённых фото пользователя. По прежним 12 контрольным фото найдено 4/13 меток, несовпавших рамок 5. Проверяется отдельно от первого этапа.",
+    "mapping": {
+      "corrosion": "corrosion"
+    },
+    "ignored": [],
+    "sourceUrl": "https://universe.roboflow.com/yilmaz/corrosion-jmvmm/dataset/5"
+  }
+]

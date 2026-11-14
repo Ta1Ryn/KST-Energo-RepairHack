@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black2.0">#030303</color>
+
+    <color name="accent">#0052B4</color>
+    <color name="accent_inactive">#B3C9EA</color>
+    <color name="accent_soft">#E5EEFA</color>
+    <color name="accent_deep">#003C85</color>
+    <color name="on_accent">#FFFFFF</color>
+
+    <color name="error">#C73845</color>
+    <color name="success">#237747</color>
+    <color name="success_soft">#E3F8E6</color>
+    <color name="warning">#A06408</color>
+    <color name="warning_soft">#FFF4E0</color>
+    <color name="detection_outline">#FFC457</color>
+
+    <color name="input_bg">#F5F5F9</color>
+    <color name="input_stroke">#EBEBEB</color>
+    <color name="input_icon">#B8C1CC</color>
+    <color name="placeholder">#939396</color>
+    <color name="description">#7E7E9A</color>
+    <color name="card_stroke">#F4F4F4</color>
+    <color name="home_tile_bg">#E8EAED</color>
+    <color name="home_tile_stroke">#CDD1D8</color>
+    <color name="home_icon_tint">#000000</color>
+    <color name="uikit_input_stroke_focused_transparent">#800052B4</color>
+    <color name="uikit_input_background_error_transparent">#1AFD3535</color>
+
+    <color name="bg">#F4F6F9</color>
+    <color name="surface">#FFFFFFFF</color>
+    <color name="navy">#0B1F3A</color>
+    <color name="navy_mid">#0E1A33</color>
+    <color name="navy_soft">#162544</color>
+    <color name="scan_cyan">#7FB2FF</color>
+    <color name="overlay_scrim">#99000000</color>
+    <color name="nav_camera_bg">#4D000000</color>
+    <color name="icon_muted">#8A94A6</color>
+    <color name="history_tint">#5B4BFF</color>
+    <color name="history_soft">#EEEDFF</color>
+    <color name="settings_tint">#2F6B8A</color>
+    <color name="settings_soft">#E6F3F8</color>
+
+    <!-- Фирменные цвета КСТ Энерго Инжиниринг: белый + корпоративный синий -->
+    <color name="brand_blue">#0052B4</color>
+    <color name="brand_blue_light">#7FB2FF</color>
+    <color name="divider">#E3E7EE</color>
+    <color name="text_secondary">#5B6B80</color>
+    <color name="error_soft">#FDECEC</color>
+    <color name="stale">#8A94A6</color>
+    <color name="stale_soft">#EEF0F4</color>
+</resources>

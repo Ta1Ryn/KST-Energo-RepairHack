@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="screen_padding">20dp</dimen>
+    <dimen name="screen_padding_top">16dp</dimen>
+    <dimen name="content_max_width">560dp</dimen>
+    <dimen name="card_radius">22dp</dimen>
+    <dimen name="card_radius_sm">16dp</dimen>
+    <dimen name="card_padding">18dp</dimen>
+    <dimen name="card_min_height">156dp</dimen>
+    <dimen name="button_height">56dp</dimen>
+    <dimen name="input_height">56dp</dimen>
+    <dimen name="home_grid_gap">12dp</dimen>
+    <dimen name="nav_pill_margin">28dp</dimen>
+    <dimen name="nav_pill_bottom">18dp</dimen>
+    <dimen name="icon_tile">44dp</dimen>
+    <dimen name="home_tile_icon">64dp</dimen>
+    <dimen name="home_tile_icon_image">38dp</dimen>
+    <dimen name="home_tile_title_size">18sp</dimen>
+    <dimen name="logo_size">88dp</dimen>
+</resources>

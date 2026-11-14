@@ -1,0 +1,5 @@
+ultralytics==8.4.212
+torch>=2.6,<3
+opencv-python>=4.10.0,<5
+Pillow>=10.0.0,<14
+PyYAML>=6.0,<7

@@ -1,0 +1,4 @@
+{
+  "models": ["oil", "oil_trained", "metal", "case_pilot", "crack"],
+  "threshold": 0.25
+}

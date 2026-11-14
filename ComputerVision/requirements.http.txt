@@ -1,0 +1,9 @@
+-r requirements.txt
+fastapi>=0.115,<1
+uvicorn>=0.34,<1
+python-multipart>=0.0.20,<1
+clip @ git+https://github.com/ultralytics/CLIP.git@7ffa84b3bfa40c42ecc1c77147a855e69cb2dd40
+
+qrcode
+openpyxl
+reportlab

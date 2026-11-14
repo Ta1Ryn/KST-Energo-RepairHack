@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:paddingHorizontal="24dp"
+    android:paddingVertical="8dp"
+    tools:context=".presentation.login.LoginFragment">
+
+    <ImageView
+        android:id="@+id/logoMark"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/company_name"
+        android:src="@drawable/logo_kst"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/loginTitle"
+        style="@style/title_1_heavy.Start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:text="@string/login_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/modeToggle"
+        style="@style/Widget.RepairHack.Button.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="@string/employee_mode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/formDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <LinearLayout
+        android:id="@+id/pinPanel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:layout_marginStart="16dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/formDivider"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="620dp"
+        app:layout_constraintHeight_max="640dp"
+        app:layout_constraintVertical_bias="0.5">
+
+        <EditText android:id="@+id/employeeNumber" android:visibility="gone" android:layout_width="match_parent" android:layout_height="48dp" android:singleLine="true" android:inputType="text" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/serverSettings" android:layout_width="wrap_content" android:layout_height="48dp" android:text="Адрес сервера" />
+        <TextView
+            android:id="@+id/pinTitle"
+            style="@style/title_2_semibold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/enter_pin" />
+
+        <TextView
+            android:id="@+id/pinDots"
+            style="@style/title_2_semibold"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textSize="32sp"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:text="○  ○  ○  ○"
+            android:textColor="@color/accent" />
+
+        <TextView
+            android:id="@+id/error"
+            style="@style/caption_regular"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:gravity="center"
+            android:textColor="@color/error"
+            android:visibility="gone"
+            tools:text="@string/error_pin" />
+
+        <GridLayout
+            android:id="@+id/keypad"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:columnCount="3"
+            android:rowCount="4"
+            android:useDefaultMargins="false" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

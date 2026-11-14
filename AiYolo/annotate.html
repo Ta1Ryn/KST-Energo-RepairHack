@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FORK — Разметка дефектов</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font:15px system-ui,Arial,sans-serif;background:#f3f4f6;color:#17191d}header{padding:22px 28px;background:white;border-bottom:1px solid #ddd}h1{font-size:24px;margin:0 0 6px}.muted{color:#656b76;font-size:13px}main{display:grid;grid-template-columns:1fr 320px;gap:18px;padding:20px;max-width:1600px;margin:auto}section,aside{background:#fff;padding:18px;border-radius:14px}label{display:block;font-weight:600;margin:15px 0 7px}input,select,button{font:inherit}input[type=text],input[type=url],select{width:100%;padding:10px;border:1px solid #cbd0d8;border-radius:8px}button{padding:10px 13px;border:1px solid #ccd0d7;border-radius:8px;background:white;cursor:pointer}button.primary{color:white;background:#111827;border-color:#111827}button:disabled{opacity:.45;cursor:default}.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.stage{display:flex;justify-content:center;align-items:center;background:#20242d;min-height:420px;margin:16px 0;border-radius:10px;overflow:hidden}canvas{max-width:100%;max-height:65vh;touch-action:none;cursor:crosshair}#status{min-height:45px;padding:12px 0;font-weight:600}#name{overflow-wrap:anywhere}#boxes{padding:0;list-style:none}#boxes li{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid #eee}#boxes button{padding:3px 9px}.help{line-height:1.55;font-size:13px;color:#515866}#position{font-variant-numeric:tabular-nums}.bad{color:#ad2323}.good{color:#17633a}@media(max-width:850px){main{grid-template-columns:1fr}canvas{max-height:55vh}}
+</style>
+<header><h1>Разметка дефектов насоса</h1><div class="muted">Снимки обрабатываются в этом браузере. Выделяй только видимые признаки дефекта.</div></header>
+<main><section>
+<div class="row"><input id="files" type="file" accept="image/jpeg,image/png" multiple><button id="export" class="primary">Скачать разметку ZIP</button></div>
+<div id="status" role="status">Выбери фотографии JPEG или PNG. Начни с небольшой серии.</div>
+<div class="row"><button id="prev">← Назад</button><span id="position">0 / 0</span><button id="next">Далее →</button><span id="review" class="muted"></span></div>
+<div class="stage"><canvas id="canvas" width="960" height="600"></canvas></div><div id="name" class="muted"></div>
+<div class="row"><button id="done" class="primary">Разметка готова</button><button id="negative">Видимых дефектов нет</button><button id="undo">Удалить последнюю рамку</button></div>
+</section><aside>
+<label for="class">Тип дефекта</label><select id="class"><option value="0">1 · Течь масла</option><option value="1">2 · Смещение узла</option><option value="2">3 · Коррозия</option><option value="3">4 · Деформация детали</option></select>
+<p id="definition" class="help"></p>
+<label for="group">Группа независимых снимков</label><input id="group" type="text" placeholder="bg11-unit01-session01" maxlength="100">
+<p class="help">Все близкие кадры одного насоса и одной серии — одна группа. По возможности объединяй в группу весь физический экземпляр. Группы целиком попадут в обучение, проверку или тест.</p>
+<label for="source">Источник фотографий</label><input id="source" type="url" placeholder="https://… или оставь пустым для своих фото">
+<button id="apply" style="margin-top:10px">Применить группу и источник ко всем</button>
+<label>Рамки текущего снимка</label><ul id="boxes"></ul>
+<p class="help">Потяни мышью по фотографии, чтобы обвести дефект. Клавиши 1–4 выбирают класс; стрелки переключают снимки. Неразличимые случаи оставляй на повторный осмотр. Экспорт содержит только подтверждённую разметку и требует проверки всех выбранных фото.</p>
+<button id="draft">Сохранить черновик JSON</button><label for="restore">Открыть черновик после выбора тех же фото</label><input id="restore" type="file" accept="application/json">
+</aside></main>
+<script>
+const $=id=>document.getElementById(id);
+const CODES=['oilLeak','displacement','corrosion','geometryDeformation'];
+const LABELS=['Течь масла','Смещение узла','Коррозия','Деформация детали'];
+const COLORS=['#ff765b','#6db4ff','#ffc34d','#d19cff'];
+const DEFINITIONS=['Обведи видимый потёк, капли или скопление масла у места утечки. Блик сам по себе не является течью.','Нужны видимые ориентиры, подтверждающие сдвиг узла или крепления. По одному неясному ракурсу смещение не назначаем.','Обведи область видимой коррозии. Отличай её от грязи, краски и освещения.','Обведи видимую вмятину, изгиб или изменение формы самой детали. Сдвиг целого узла относится к другому классу.'];
+let entries=[],index=0,drag=null,loading=0,busy=false;
+const canvas=$('canvas'),ctx=canvas.getContext('2d');
+const current=()=>entries[index];
+function status(text,bad=false){$('status').textContent=text;$('status').className=bad?'bad':'';}
+function download(name,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),30000);}
+function serialize(e){return {name:e.file.name,size:e.file.size,lastModified:e.file.lastModified,group:e.group,sourceUrl:e.sourceUrl,boxes:e.boxes,reviewed:e.reviewed,negative:e.negative};}
+function changed(){const e=current();if(e){e.reviewed=false;e.negative=false;}updateList();draw();}
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);const e=current();if(!e?.image)return;
+  ctx.drawImage(e.image,0,0,canvas.width,canvas.height);
+  const boxes=[...e.boxes];if(drag)boxes.push({id:Number($('class').value),x:Math.min(drag.x,drag.endX),y:Math.min(drag.y,drag.endY),w:Math.abs(drag.endX-drag.x),h:Math.abs(drag.endY-drag.y)});
+  for(const box of boxes){ctx.strokeStyle=COLORS[box.id];ctx.lineWidth=3;ctx.strokeRect(box.x*canvas.width,box.y*canvas.height,box.w*canvas.width,box.h*canvas.height);ctx.font='bold 17px Arial';const text=LABELS[box.id],w=ctx.measureText(text).width+12;const y=Math.max(0,box.y*canvas.height-25);ctx.fillStyle=COLORS[box.id];ctx.fillRect(box.x*canvas.width,y,w,25);ctx.fillStyle='#111';ctx.fillText(text,box.x*canvas.width+6,y+18);}
+}
+function updateList(){
+  const e=current();$('position').textContent=entries.length?`${index+1} / ${entries.length}`:'0 / 0';$('review').textContent=e?.reviewed?(e.negative?'Подтверждено: видимых дефектов нет':'Разметка подтверждена'):'Не подтверждено';$('boxes').replaceChildren();
+  for(const [i,box] of (e?.boxes||[]).entries()){const li=document.createElement('li'),text=document.createElement('span'),button=document.createElement('button');text.textContent=`${i+1}. ${LABELS[box.id]}`;button.textContent='×';button.title='Удалить рамку';button.onclick=()=>{e.boxes.splice(i,1);changed();};li.append(text,button);$('boxes').append(li);}
+}
+async function show(){
+  const token=++loading,e=current();drag=null;if(!e){draw();return;}
+  $('group').value=e.group;$('source').value=e.sourceUrl;$('name').textContent=e.file.name;updateList();
+  if(!e.image){const url=URL.createObjectURL(e.file),image=new Image();try{await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(new Error('Не удалось открыть изображение'));image.src=url;});if(image.naturalWidth*image.naturalHeight>25000000||Math.min(image.naturalWidth,image.naturalHeight)<64)throw new Error('Используй фото от 64 × 64 до 25 мегапикселей');e.image=image;}finally{URL.revokeObjectURL(url);}}
+  if(token!==loading)return;const factor=Math.min(1,1400/e.image.naturalWidth);canvas.width=Math.round(e.image.naturalWidth*factor);canvas.height=Math.round(e.image.naturalHeight*factor);draw();
+}
+function navigate(delta){if(busy||!entries.length)return;index=Math.max(0,Math.min(entries.length-1,index+delta));show().catch(e=>status(e.message,true));}
+$('files').onchange=async event=>{
+  if(busy)return;const files=[...event.target.files];
+  if(files.length>100||files.reduce((n,f)=>n+f.size,0)>350*1024*1024){status('Выбери до 100 фотографий общим размером до 350 МБ за один раз.',true);return;}
+  entries=files.map(file=>({file,boxes:[],group:'',sourceUrl:'',reviewed:false,negative:false,image:null}));index=0;
+  status('Укажи группу съёмки и обведи дефекты. Если их нет, подтверди это отдельной кнопкой.');await show().catch(e=>status(e.message,true));
+};
+$('class').onchange=()=>$('definition').textContent=DEFINITIONS[Number($('class').value)];$('class').onchange();
+$('group').oninput=()=>{if(current())current().group=$('group').value.trim();};$('source').oninput=()=>{if(current())current().sourceUrl=$('source').value.trim();};
+$('apply').onclick=()=>{if(busy)return;for(const e of entries){e.group=$('group').value.trim();e.sourceUrl=$('source').value.trim();}status('Группа и источник назначены всем выбранным фотографиям.');};
+$('prev').onclick=()=>navigate(-1);$('next').onclick=()=>navigate(1);
+function point(event){const r=canvas.getBoundingClientRect();return {x:Math.max(0,Math.min(1,(event.clientX-r.left)/r.width)),y:Math.max(0,Math.min(1,(event.clientY-r.top)/r.height))};}
+canvas.onpointerdown=event=>{if(busy||!current()?.image)return;const p=point(event);drag={...p,endX:p.x,endY:p.y};canvas.setPointerCapture(event.pointerId);};
+canvas.onpointermove=event=>{if(!drag)return;const p=point(event);drag.endX=p.x;drag.endY=p.y;draw();};
+canvas.onpointerup=event=>{if(!drag)return;const p=point(event),box={id:Number($('class').value),x:Math.min(drag.x,p.x),y:Math.min(drag.y,p.y),w:Math.abs(p.x-drag.x),h:Math.abs(p.y-drag.y)};drag=null;if(box.w*canvas.width>=4&&box.h*canvas.height>=4)current().boxes.push(box);changed();};
+canvas.onpointercancel=()=>{drag=null;draw();};
+$('undo').onclick=()=>{if(!busy&&current()){current().boxes.pop();changed();}};
+function confirm(negative){const e=current();if(busy||!e)return;if(!e.group){status('Сначала укажи группу съёмки.',true);return;}if(negative&&e.boxes.length){status('На снимке есть рамки. Удали ошибочные рамки или подтверди разметку.',true);return;}if(!negative&&!e.boxes.length){status('Для снимка без рамок используй кнопку «Видимых дефектов нет».',true);return;}e.reviewed=true;e.negative=negative;updateList();status(`Подтверждено ${entries.filter(x=>x.reviewed).length} из ${entries.length} фотографий.`);}
+$('done').onclick=()=>confirm(false);$('negative').onclick=()=>confirm(true);
+$('draft').onclick=()=>download('fork-annotation-draft.json',new Blob([JSON.stringify({version:1,classes:CODES,images:entries.map(serialize)},null,2)],{type:'application/json'}));
+$('restore').onchange=async event=>{try{if(!entries.length)throw new Error('Сначала выбери исходные фотографии');const data=JSON.parse(await event.target.files[0].text());if(data.version!==1||JSON.stringify(data.classes)!==JSON.stringify(CODES))throw new Error('Другой формат разметки');for(const e of entries){const saved=data.images.find(x=>x.name===e.file.name&&x.size===e.file.size&&x.lastModified===e.file.lastModified);if(saved){if(!Array.isArray(saved.boxes)||saved.boxes.some(b=>!Number.isInteger(b.id)||b.id<0||b.id>3||![b.x,b.y,b.w,b.h].every(Number.isFinite)||b.x<0||b.y<0||b.w<=0||b.h<=0||b.x+b.w>1.000001||b.y+b.h>1.000001))throw new Error('Некорректные рамки в черновике');Object.assign(e,{boxes:saved.boxes,group:String(saved.group||''),sourceUrl:String(saved.sourceUrl||''),reviewed:saved.reviewed===true,negative:saved.negative===true});}}await show();status('Черновик восстановлен для совпавших фотографий.');}catch(e){status(e.message,true);}};
+window.onbeforeunload=event=>{if(entries.some(e=>e.boxes.length||e.reviewed)){event.preventDefault();event.returnValue='';}};
+document.onkeydown=event=>{if(['INPUT','SELECT','TEXTAREA'].includes(event.target.tagName))return;if(/^[1-4]$/.test(event.key)){$('class').value=String(Number(event.key)-1);$('class').onchange();}if(event.key==='ArrowRight')navigate(1);if(event.key==='ArrowLeft')navigate(-1);};
+const crcTable=Array.from({length:256},(_,n)=>{for(let k=0;k<8;k++)n=(n&1)?0xedb88320^(n>>>1):n>>>1;return n>>>0;});
+function crc(bytes){let n=0xffffffff;for(const b of bytes)n=crcTable[(n^b)&255]^(n>>>8);return (n^0xffffffff)>>>0;}
+function zip(files){let offset=0;const chunks=[],directory=[],enc=new TextEncoder();for(const file of files){const name=enc.encode(file.name),bytes=file.bytes,checksum=crc(bytes),header=new Uint8Array(30+name.length),view=new DataView(header.buffer);view.setUint32(0,0x04034b50,true);view.setUint16(4,20,true);view.setUint16(6,0x800,true);view.setUint32(14,checksum,true);view.setUint32(18,bytes.length,true);view.setUint32(22,bytes.length,true);view.setUint16(26,name.length,true);header.set(name,30);chunks.push(header,bytes);const central=new Uint8Array(46+name.length),cv=new DataView(central.buffer);cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);cv.setUint16(8,0x800,true);cv.setUint32(16,checksum,true);cv.setUint32(20,bytes.length,true);cv.setUint32(24,bytes.length,true);cv.setUint16(28,name.length,true);cv.setUint32(42,offset,true);central.set(name,46);directory.push(central);offset+=header.length+bytes.length;}const directorySize=directory.reduce((sum,b)=>sum+b.length,0),end=new Uint8Array(22),ev=new DataView(end.buffer);ev.setUint32(0,0x06054b50,true);ev.setUint16(8,files.length,true);ev.setUint16(10,files.length,true);ev.setUint32(12,directorySize,true);ev.setUint32(16,offset,true);return new Blob([...chunks,...directory,end],{type:'application/zip'});}
+$('export').onclick=async()=>{
+  if(busy)return;try{
+    if(!entries.length)throw new Error('Сначала выбери фотографии');const invalid=entries.findIndex(e=>!e.reviewed||!e.group||(!e.boxes.length&&!e.negative));if(invalid>=0){index=invalid;await show();throw new Error('Проверь и подтверди этот снимок перед экспортом');}
+    busy=true;$('export').disabled=true;const files=[],manifest={version:1,classes:CODES,images:[]},encoder=new TextEncoder();let total=0;
+    for(let i=0;i<entries.length;i++){
+      index=i;await show();const e=entries[i],imageCanvas=document.createElement('canvas');imageCanvas.width=e.image.naturalWidth;imageCanvas.height=e.image.naturalHeight;imageCanvas.getContext('2d').drawImage(e.image,0,0);const blob=await new Promise(resolve=>imageCanvas.toBlob(resolve,'image/jpeg',.95));if(!blob)throw new Error('Не удалось подготовить JPEG');const bytes=new Uint8Array(await blob.arrayBuffer());total+=bytes.length;if(total>512*1024*1024)throw new Error('Архив больше 512 МБ. Раздели фотографии на меньшие партии');const name=`image_${String(i+1).padStart(4,'0')}.jpg`;
+      const labels=e.boxes.map(b=>`${b.id} ${(b.x+b.w/2).toFixed(8)} ${(b.y+b.h/2).toFixed(8)} ${b.w.toFixed(8)} ${b.h.toFixed(8)}`).join('\n');files.push({name:`images/${name}`,bytes},{name:`labels/${name.replace('.jpg','.txt')}`,bytes:encoder.encode(labels?labels+'\n':'')});manifest.images.push({file:name,originalName:e.file.name,group:e.group,sourceUrl:e.sourceUrl,reviewed:true,negative:e.negative});status(`Подготовка архива: ${i+1} / ${entries.length}`);
+    }
+    files.push({name:'manifest.json',bytes:encoder.encode(JSON.stringify(manifest,null,2))});download('fork-annotations.zip',zip(files));status('ZIP сохранён. Распакуй его перед подготовкой train/val/test. Оригинальные фото сохранены; в архиве JPEG с нормализованным поворотом.');
+  }catch(error){status(error.message,true);}finally{busy=false;$('export').disabled=false;}
+};
+</script></html>

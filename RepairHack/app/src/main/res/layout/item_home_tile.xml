@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="6dp"
+    android:clickable="true"
+    android:focusable="true"
+
+    app:cardCornerRadius="@dimen/card_radius"
+    app:cardElevation="2dp"
+
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="68dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            app:tint="@color/home_icon_tint"
+            tools:src="@drawable/ic_equipment" />
+
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/title_2_semibold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:maxLines="3"
+            android:textSize="@dimen/home_tile_title_size"
+            tools:text="@string/tile_equipment" />
+
+        <TextView
+            android:id="@+id/hint"
+            style="@style/caption_2_regular.Start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:visibility="gone"
+            tools:text="@string/tile_equipment_hint" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

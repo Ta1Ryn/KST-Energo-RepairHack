@@ -1,0 +1,7 @@
+# Install into the training/research venv, not the serving venv.
+-r requirements.txt
+pyarrow==22.0.0
+transformers==4.57.6
+safetensors==0.8.0
+huggingface-hub==0.36.2
+tokenizers==0.22.2

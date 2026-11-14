@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="title_1_semi_bold">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:lineHeight">28dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0.033</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="title_1_heavy">
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:lineHeight">28dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0.033</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="title_2_regular">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:lineHeight">28dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0.038</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="title_2_semibold">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:lineHeight">28dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0.038</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="title_2_heavy">
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:lineHeight">28dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0.038</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+
+    <style name="title_3_regular">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:lineHeight">24dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="title_3_medium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:lineHeight">24dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="title_3_semibold">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:lineHeight">24dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <!--    <style name="UIKit.PinDot">-->
+    <!--        <item name="android:layout_marginStart">8dp</item>-->
+    <!--        <item name="android:layout_marginEnd">8dp</item>-->
+    <!--        <item name="android:src">@drawable/pin_dot_inactive</item> &lt;!&ndash; По умолчанию неактивная &ndash;&gt;-->
+    <!--    </style>-->
+
+    <style name="headline_regular">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineHeight">20dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">-0.032</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="headline_medium">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineHeight">20dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">-0.032</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+
+    <style name="text_regular">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:lineHeight">20dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="text_medium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:lineHeight">20dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+
+    <style name="caption_regular">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineHeight">20dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="caption_semibold">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineHeight">20dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="caption_2_regular">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineHeight">16dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="caption_2_bold">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineHeight">16dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+
+
+
+    <style name="UIKit.TextAppearance.SocialButton" parent="TextAppearance.MaterialComponents.Button">
+        <item name="textAppearanceBody1">@style/title_3_medium</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="title_1_heavy.Start" parent="title_1_heavy">
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:gravity">start</item>
+    </style>
+
+    <style name="title_2_semibold.Start" parent="title_2_semibold">
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:gravity">start</item>
+    </style>
+
+    <style name="title_3_semibold.Start" parent="title_3_semibold">
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:gravity">start</item>
+    </style>
+
+    <style name="caption_regular.Start" parent="caption_regular">
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">@color/description</item>
+    </style>
+
+    <style name="caption_2_regular.Start" parent="caption_2_regular">
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">@color/placeholder</item>
+    </style>
+
+    <style name="headline_medium.Start" parent="headline_medium">
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:gravity">start</item>
+    </style>
+
+    <style name="text_regular.Start" parent="text_regular">
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">@color/description</item>
+    </style>
+
+    <style name="kicker">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
+</resources>
