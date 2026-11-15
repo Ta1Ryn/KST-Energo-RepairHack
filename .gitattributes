@@ -1,2 +1,13 @@
-# Generated comparison report embeds photos and model outputs.
+# Count the Android application, API and CV source in the language chart.
+# Auxiliary web pages, data preparation, setup, tests and SQL stay in the repo.
+*.html linguist-detectable=false
+*.htm linguist-detectable=false
+AiYolo/** linguist-detectable=false
+scripts/** linguist-detectable=false
+tests/** linguist-detectable=false
+database/** linguist-detectable=false
+*.ps1 linguist-detectable=false
+*.sh linguist-detectable=false
+
+# Locally generated comparison reports embed photos and model outputs.
 ComputerVision/training-panel.html linguist-generated=true

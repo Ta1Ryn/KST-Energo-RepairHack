@@ -36,6 +36,7 @@
 *.iml
 ComputerVision/datasets/
 ComputerVision/runs/
+ComputerVision/training-panel.html
 ComputerVision/experimental/
 ComputerVision/models/archive/
 AiYolo/models/

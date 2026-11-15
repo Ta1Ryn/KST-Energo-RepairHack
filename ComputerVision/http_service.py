@@ -168,9 +168,12 @@ def models(request:Request):
 @app.get('/training',response_class=HTMLResponse)
 def training_page(request:Request):
     local_review(request)
-    return HTMLResponse((ROOT/'training-panel.html').read_text(),headers={'Cache-Control':'no-store',
+    panel=ROOT/'training-panel.html'
+    if not panel.is_file():
+        panel=ROOT/'comparison.html'
+    return HTMLResponse(panel.read_text(),headers={'Cache-Control':'no-store',
         'X-Content-Type-Options':'nosniff',
-        'Content-Security-Policy':"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'"})
+        'Content-Security-Policy':"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; frame-ancestors 'none'"})
 
 
 @app.get('/training-status')

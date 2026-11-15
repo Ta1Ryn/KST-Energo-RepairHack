@@ -1,6 +1,12 @@
 # КСТ Энерго · Fork
 
+![C#](https://img.shields.io/badge/C%23-ASP.NET_Core-512BD4?logo=dotnet&logoColor=white)
+![Python](https://img.shields.io/badge/Python-FastAPI_%2F_PyTorch-3776AB?logo=python&logoColor=white)
+![Kotlin](https://img.shields.io/badge/Kotlin-Android-7F52FF?logo=kotlin&logoColor=white)
+
 Планшетное приложение для осмотра насосного оборудования: OCR шильдика, паспорт и документы, графики датчиков, живой анализ камеры и история осмотров.
+
+**Основной стек: C# · Python · Kotlin.** C# обслуживает API, доступ, документы и осмотры; Python выполняет обучение и вывод моделей; Kotlin отвечает за приложение Android.
 
 **🥈 Команда Fork заняла второе место на «Кибер102.РФ»!**
 
@@ -36,7 +42,7 @@ QR-коды в Android убраны. Основной экран открыва�
 
 ```mermaid
 flowchart LR
-    T[Android: Kotlin, CameraX, ML Kit, Room] --> A[ASP.NET Core API]
+    T[Android: Kotlin, CameraX, ML Kit, Room] --> A[C#: ASP.NET Core API]
     A --> P[(PostgreSQL)]
     A --> C[Python: FastAPI, PyTorch, YOLO]
     S[Симулятор датчиков] --> A
@@ -99,5 +105,9 @@ adb install -r KST-Energo-Android.apk
 - docs/images/ — реальные экраны приложения и тестовый шильдик.
 
 Локальные базы, кэши, веса, большие датасеты и дубли старого Android-проекта исключены из Git. Необязательная галерея разметки поставляется отдельно; сервис может анализировать новые фотографии без неё.
+
+Статистика языков GitHub настроена по основному коду Android, API и CV. Вспомогательные HTML-панели, SQL, скрипты подготовки и запуска, инструменты AiYolo и серверные проверки исключены из этой статистики через [.gitattributes](.gitattributes).
+
+Сохранённый HTML-отчёт сравнения с фотографиями создаётся локально скриптом `scripts/build-training-comparison.py` и исключён из Git. Без него адрес `/training` открывает обычное окно сравнения моделей.
 
 Android assembleDebug и lintDebug прошли, ошибок NewApi нет. API собран без ошибок. APK установлен на физический планшет Android 10; текущую ручную проверку выполняет команда Fork.

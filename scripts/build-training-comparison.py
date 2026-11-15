@@ -139,7 +139,7 @@ def main():
     page = template.replace('__COMPARISON_DATA__', serialized)
     panel = CV / 'training-panel.html'
     archive = ROOT / '.integration' / 'training-panel-before-comparison.html'
-    if not archive.exists():
+    if panel.is_file() and not archive.exists():
         archive.write_bytes(panel.read_bytes())
     panel.write_text(page)
     offline = Path('/home/nok1d/Downloads/КСТ_сравнение_моделей_2026-11-14.html')
